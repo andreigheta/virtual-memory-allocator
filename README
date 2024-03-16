@@ -1,0 +1,40 @@
+Copyright 2023 Gheta Andrei-Cristian 312CA
+
+Descriere:
+
+Pentru inceput alocam arena propriu-zisa. Odata alocata, vom putea introduce 
+block-uri in interior. Dupa ce facem toate testele necesare ca block-ul sa
+respecte dimensiunile si sa nu existe suprascrieri avem 3 optiuni de adaugare
+block:
+-adaugare block la stanga
+-adaugare block la dreapta
+-adaugare block la mijloc
+
+Dupa cum spun si numele, acestea depind de pozitia unde se aloca fata de un nou
+block. Gandirea de baza este ca noi alocam un nou block de dimensiune block 
+vechi (sau blockuri, pentru adaugarea la mijloc) + block nou, iar apoi mutam
+elementele.
+
+Dezalocarea unui miniblock are loc astfel: parcurgem lista de blockuri, odata
+gasit block-ul care contine miniblock-ul dorit, parcurgem si lista acestuia de
+miniblock-uri. Intr-un final ne aflam chiar pe miniblock-ul pe care trebuie
+sa-l eliminam, iar acest lucru are la randul lui 3 optiuni:
+-eliminare miniblock la stanga
+-eliminare miniblock la dreapta
+-eliminare miniblock la mijloc
+
+Gandirea la aceasta functie este fix invers fata de adaugare. Cand stergem un
+miniblock la stanga sau la dreapta doar dezalocam resursele sale si micsoram
+size-ul block-ului mare. La cel din mijloc spargem produsul final in 2
+block-uri, iar pe cel din mijloc il dezalocam.
+
+Read-ul si write-ul se realizeaza aproximativ la fel doar cu niste mici
+schimbari. Initial citim/scriem atat cat putem in primul miniblock, iar apoi
+continuam cu urmatoarele daca ne mai ramane size (se decrementeaza dupa fiecare
+scriere/citire).
+
+Mprotect-ul parcurge la fel ca alloc_block si free_block pana cand gaseste
+miniblock-ul dorit, iar apoi incrementeaza permisiunile in functie de
+parametrii primiti.
+
+In final dealocam arena si toate resursele ei.
